@@ -37,23 +37,33 @@ Enemy.prototype.update = function (dt) {
   if (this.x >= 500) {
     this.resetEnemy();
   }
-  //handling collision with the enemies
+  //handling collision with the player
   if (player.x >= this.x - 40 && player.x <= this.x + 40) {
     if (player.y >= this.y - 40 && player.y <= this.y + 40) {
       player.x = 200;
       player.y = 400;
-      if (points > 500){
-        points -=500;
+      if (points > 500) {
+        points -= 500;
+        document.getElementById("score").textContent = points;
+
       }
       else {
         points = 0;
+        document.getElementById("score").textContent = points;
+
       }
     }
   }
+  //handling collision with gems
+  if (gem.x >= this.x - 40 && gem.x <= this.x + 40) {
+    if (gem.y >= this.y - 40 && gem.y <= this.y + 40) {
+      this.resetGem();
+    }
+  }
 };
-Enemy.prototype.resetEnemy = function(){
-    this.x = this.argument1;
-    this.y = this.argument2;
+Enemy.prototype.resetEnemy = function () {
+  this.x = this.argument1;
+  this.y = this.argument2;
 };
 
 // Now write your own player class
@@ -74,14 +84,16 @@ Player.prototype.handleInput = function (keys) {
     this.y = this.y - 100;
   else if (keys === 'down' && this.y < 400)
     this.y = this.y + 100;
-    console.log(this.y);
   if (player.x === gem.x && player.y === gem.y) {
     points += 100;
+    document.getElementById("score").textContent = points;
     console.log("points " + points);
     this.resetGem();
   };
-  if (player.y === -100 ){
-    alert ("You win!");
+  if (player.y === -100) {
+    alert("You win!");
+    points = 0;
+    document.getElementById("score").textContent = points;
     player.x = 200;
     player.y = 400;
   };
